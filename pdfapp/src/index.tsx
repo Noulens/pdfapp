@@ -8,6 +8,7 @@ import Footer from './components/Footer'
 import Register from './components/Register'
 import Login from "./components/Login";
 import Logout from "./components/Logout";
+import Single from "./components/Single";
 
 
 const root = ReactDOM.createRoot(
@@ -15,16 +16,17 @@ const root = ReactDOM.createRoot(
 );
 root.render(
 	<Router>
-		{/*<React.StrictMode>*/}
+		<React.StrictMode>
 			<Header />
 				<Routes>
 					<Route path="/*" element={<App />} />
 					<Route path="/register" element={<Register />}/>
 					<Route path="/login" element={<Login />}/>
 					<Route path="/logout" element={<Logout />}/>
+					<Route path="/post/:slug" element={<Single />} />
 				</Routes>
 			<Footer />
-		{/*</React.StrictMode>*/}
+		</React.StrictMode>
 	</Router>
 );
 

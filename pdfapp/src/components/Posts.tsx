@@ -11,6 +11,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Link from "@mui/material/Link";
 
 
 // TODO remove, this demo shouldn't need to reset the theme.
@@ -59,14 +60,17 @@ export default function Posts(props: any) {
 						{posts.map((posts: any) => (
 							<Grid item key={posts.id} xs={12} sm={6} md={4}>
 								<Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-								<CardMedia
+								<Link
+									color="textPrimary"
+									href={"post/" + posts.slug}>
+									<CardMedia
 									component="div"
 									sx={{
 										// 16:9
 										pt: '20.25%',
 									}}
-									image="https://source.unsplash.com/random?wallpapers"
-								/>
+									image="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg"/>
+								</Link>
 								<CardContent sx={{ flexGrow: 1 }}>
 									<Typography gutterBottom variant="h5" component="h2">
 										{posts.title}
