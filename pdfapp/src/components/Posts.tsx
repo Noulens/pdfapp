@@ -11,7 +11,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Link from "@mui/material/Link";
+import {Link, useNavigate} from "react-router-dom";
 
 
 // TODO remove, this demo shouldn't need to reset the theme.
@@ -61,8 +61,8 @@ export default function Posts(props: any) {
 							<Grid item key={posts.id} xs={12} sm={6} md={4}>
 								<Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
 								<Link
-									color="textPrimary"
-									href={"post/" + posts.slug}>
+									to={"post/" + posts.slug}
+									color="textPrimary">
 									<CardMedia
 									component="div"
 									sx={{
@@ -80,7 +80,11 @@ export default function Posts(props: any) {
 									</Typography>
 								</CardContent>
 								<CardActions>
-									<Button size="small">View</Button>
+									<Link
+										to={"post/" + posts.slug}
+										color="textPrimary">
+										<Button size="small">View</Button>
+									</Link>
 									<Button size="small">Edit</Button>
 								</CardActions>
 								</Card>

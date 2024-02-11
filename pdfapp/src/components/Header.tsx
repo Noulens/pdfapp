@@ -1,15 +1,25 @@
-import React from 'react';
+import React, {useState} from 'react';
+import { useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import CssBaseline from "@mui/material/CssBaseline";
-import { Container } from '@mui/system';
 import Link from "@mui/material/Link";
 import { NavLink } from "react-router-dom";
 import Button from "@mui/material/Button";
 import Box from '@mui/material/Box';
+import SearchBar from "material-ui-search-bar";
+
+
 
 const Header = () => {
+	let history = useNavigate();
+	const [data, setData] = useState({ search: '' });
+	const goSearch = (e: any) => {
+		console.log(data.search)
+		history('/search/?search=' + data.search);
+		window.location.reload()
+	}
+
 	return (
 		<AppBar position="static">
 			<Toolbar>
@@ -22,6 +32,11 @@ const Header = () => {
 						Uppy - a basic PDF App
 					</Link>
 				</Typography>
+				<SearchBar
+					value={data.search}
+					onChange={(newValue) => setData({ search: newValue })}
+					onRequestSearch={() => goSearch(data.search)}
+				/>
 				<Box>
 					<Link
 						color="textPrimary"

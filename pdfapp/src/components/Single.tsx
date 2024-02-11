@@ -26,11 +26,13 @@ const Single = () => {
 		if (effectRun.current || process.env.NODE_ENV !== 'development')
 		{
 			if (slug != null) {
-				axiosInstance.get(slug)
+				axiosInstance.get("/post/" + slug)
 					.then((res) => {
 						setData({posts: res.data});
 						console.log(res.data);
-					});
+					}).catch((error) => {
+						console.log(error)
+				})
 			}
 		}
 		return (): void =>

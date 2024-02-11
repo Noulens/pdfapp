@@ -9,6 +9,7 @@ import Register from './components/Register'
 import Login from "./components/Login";
 import Logout from "./components/Logout";
 import Single from "./components/Single";
+import Search from "./components/Search";
 
 
 const root = ReactDOM.createRoot(
@@ -24,6 +25,7 @@ root.render(
 					<Route path="/login" element={<Login />}/>
 					<Route path="/logout" element={<Logout />}/>
 					<Route path="/post/:slug" element={<Single />} />
+					<Route path="/search" element={<Search />} />
 				</Routes>
 			<Footer />
 		</React.StrictMode>
