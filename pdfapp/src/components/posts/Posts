@@ -85,7 +85,7 @@ export default function Posts(props: any) {
 										color="textPrimary">
 										<Button size="small">View</Button>
 									</Link>
-									<Button size="small">Edit</Button>
+									<Button href={"delete/" + posts.id} size="small">Delete</Button>
 								</CardActions>
 								</Card>
 							</Grid>

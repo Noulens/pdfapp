@@ -5,11 +5,13 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import App from './App';
 import Header from './components/Header'
 import Footer from './components/Footer'
-import Register from './components/Register'
-import Login from "./components/Login";
-import Logout from "./components/Logout";
-import Single from "./components/Single";
-import Search from "./components/Search";
+import Register from './components/auth/Register'
+import Login from "./components/auth/Login";
+import Logout from "./components/auth/Logout";
+import Single from "./components/posts/Single";
+import Search from "./components/posts/Search";
+import Create from "./components/crud/Create";
+import Delete from "./components/crud/Delete";
 
 
 const root = ReactDOM.createRoot(
@@ -26,6 +28,8 @@ root.render(
 					<Route path="/logout" element={<Logout />}/>
 					<Route path="/post/:slug" element={<Single />} />
 					<Route path="/search" element={<Search />} />
+					<Route path="/create" element={<Create />} />
+					<Route path="/delete/:id" element={<Delete />} />
 				</Routes>
 			<Footer />
 		</React.StrictMode>

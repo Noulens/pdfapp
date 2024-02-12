@@ -1,7 +1,7 @@
 import React, {useRef} from 'react';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import axiosInstance from "../axios";
+import axiosInstance from "../../axios";
 import Typography from "@mui/material/Typography";
 import {Container} from "@mui/system";
 import CssBaseline from "@mui/material/CssBaseline";

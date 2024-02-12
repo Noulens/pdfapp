@@ -1,20 +1,19 @@
 import React, {useEffect, useRef, useState} from 'react';
 import './App.css';
-import Posts from './components/Posts';
-import PostLoadingComponent from './components/PostLoading';
+// import Posts from './components/posts/Posts';
+import PostLoadingComponent from './components/posts/PostLoading';
 import axiosInstance from "./axios";
+import PostsTab from "./components/posts/PostTab";
 
 const App = () => {
-	const PostLoading = PostLoadingComponent(Posts);
+	const PostLoading = PostLoadingComponent(PostsTab);
 	const [appState, setAppState] = useState({
 		loading: false,
 		posts: null,
 	});
 	const effectRun = useRef(false);
 
-
 	useEffect(() => {
-
 		let isMounted: boolean = true
 		if (effectRun.current || process.env.NODE_ENV !== 'development')
 		{

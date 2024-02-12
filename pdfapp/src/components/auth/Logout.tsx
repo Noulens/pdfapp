@@ -1,14 +1,12 @@
 import React, {useEffect} from "react";
-import axiosInstance from "../axios";
+import axiosInstance from "../../axios";
 import { useNavigate } from "react-router-dom";
-import {Simulate} from "react-dom/test-utils";
-import error = Simulate.error;
 
 
 export default function Logout() {
 	const navigate = useNavigate();
 	useEffect(() => {
-		const response = axiosInstance.post('user/logout/blacklist/', {
+		axiosInstance.post('user/logout/blacklist/', {
 			refresh_token: localStorage.getItem('refresh_token'),
 		})
 		.catch((error: any) => {
