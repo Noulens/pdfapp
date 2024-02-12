@@ -6,7 +6,7 @@ import axiosInstance from "./axios";
 import PostsTab from "./components/posts/PostTab";
 import Create from "./components/crud/Create";
 import Button from "@material-ui/core/Button";
-import {Navigate, Outlet, useLocation} from "react-router-dom";
+import {Link, Navigate, Outlet, useLocation} from "react-router-dom";
 import useAuth from "./hooks/useAuth";
 
 const App = () => {
@@ -46,12 +46,13 @@ const App = () => {
 			<div className="App">
 				<h1>All Uploads</h1>
 				No posts available
-				<Button
-					href={'/create'}
-					variant="contained"
-					color="primary">
-					Upload new
-				</Button>
+				<Link to={'/create'}>
+					<Button
+						variant="contained"
+						color="primary">
+						Upload new
+					</Button>
+				</Link>
 			</div>
 		);
 	}
