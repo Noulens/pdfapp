@@ -34,6 +34,7 @@ export default function Delete() {
                 m={1}
                 p={1}
                 bgcolor="background.paper">
+                <br/>
                 <Button
                     variant="contained"
                     color="secondary"

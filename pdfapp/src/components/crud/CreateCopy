@@ -8,9 +8,6 @@ import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
-import {IconButton} from "@mui/material";
-import {FileDownload, FileUpload, PhotoCamera} from "@mui/icons-material";
-import axios from "axios";
 
 export default function Create() {
     function slugify(string: any) {
@@ -41,18 +38,12 @@ export default function Create() {
     });
 
     const [formData, updateFormData] = useState(initialFormData);
-    const [image, setFile] = useState<any>(null);
 
     const handleChange = (e: any) => {
-        if (e.target.name.includes('image')) {
-            setFile({
-                image: e.target.files,
-            })
-            console.log(e.target.files);
-        }
         if (e.target.name.includes('title')) {
             updateFormData({
                 ...formData,
+                // Trimming any whitespace
                 [e.target.name]: e.target.value.trim(),
                 ['slug']: slugify(e.target.value.trim()),
             });
@@ -64,52 +55,23 @@ export default function Create() {
         }
     };
 
-    // const handleSubmit = (e: any) => {
-    //     e.preventDefault();
-    //     let formdata = new FormData();
-    //     formdata.append('title', formData.title);
-    //     formdata.append('slug', formData.slug);
-    //     formdata.append('author', '1');
-    //     formdata.append('excerpt', formData.excerpt);
-    //     formdata.append('content', formData.content);
-    //     formdata.append('image', image.image[0]);
-    //     axiosInstance
-    //         .post(`create/`, formdata)
-    //         .then((res) => {
-    //             history('/', { replace: true });
-    //         })
-    //         .catch((error) => {
-    //             console.log(error);
-    //         });
-    // };
-
     const handleSubmit = (e: any) => {
         e.preventDefault();
-        const config = {
-            headers: {
-                Authorization: localStorage.getItem('access_token')
-                    ? 'JWT ' + localStorage.getItem('access_token')
-                    : null,
-                'content-type': 'multipart/form-data'
-            }
-        };
-        const url = 'http://127.0.0.1:8000/api/create/';
-        let formdata = new FormData();
-        formdata.append('title', formData.title);
-        formdata.append('slug', formData.slug);
-        formdata.append('author', '1');
-        formdata.append('excerpt', formData.excerpt);
-        formdata.append('content', formData.content);
-        formdata.append('image', image.image[0]);
-
-        axios.post(url, formdata, config)
+        axiosInstance
+            .post(`create/`, {
+                title: formData.title,
+                slug: formData.slug,
+                author: 1,
+                excerpt: formData.excerpt,
+                content: formData.content,
+            })
             .then((res) => {
-                history('/', {replace: true});
+                history('/', { replace: true });
             })
             .catch((error) => {
                 console.log(error);
             });
-    }
+    };
 
     return (
         <Container component="main" maxWidth="xs">
@@ -119,7 +81,6 @@ export default function Create() {
                 <Typography component="h1" variant="h5">
                     Upload new file
                 </Typography>
-                <br/>
                 <form noValidate>
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
@@ -172,17 +133,7 @@ export default function Create() {
                                 multiline
                                 minRows={4}/>
                         </Grid>
-                            <IconButton color="primary" component="span">
-                                <input
-                                    accept="image/*"
-                                    style={{ alignItems: "center" }}
-                                    id="raised-button-file"
-                                    onChange={handleChange}
-                                    name={"image"}
-                                    type="file"/>
-                            </IconButton>
                     </Grid>
-                    <br/>
                     <Button
                         type="submit"
                         fullWidth
