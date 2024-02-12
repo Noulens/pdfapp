@@ -9,8 +9,10 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import {IconButton} from "@mui/material";
 import axios from "axios";
+import useAuth from "../../hooks/useAuth";
 
 export default function Create() {
+    const { auth }: any = useAuth();
     function slugify(string: any) {
         const a =
             'àáâäæãåāăąçćčđďèéêëēėęěğǵḧîïíīįìłḿñńǹňôöòóœøōõőṕŕřßśšşșťțûüùúūǘůűųẃẍÿýžźż·/_,:;';
@@ -88,7 +90,7 @@ export default function Create() {
         let formdata = new FormData();
         formdata.append('title', formData.title);
         formdata.append('slug', formData.slug);
-        formdata.append('author', sessionStorage.getItem('user_id') as string)
+        formdata.append('author', auth.id)
         formdata.append('excerpt', formData.excerpt);
         formdata.append('content', formData.content);
         if (file) {
@@ -99,7 +101,31 @@ export default function Create() {
         }
         axios.post(url, formdata, config)
             .then((res) => {
+                window.alert('Upload successfull, and being treated')
                 history('/', {replace: true});
+                const options = {
+                    method: 'POST',
+                    url: 'https://api.edenai.run/v2/ocr/ocr',
+                    headers: {
+                        'content-type': 'multipart/form-data',
+                        authorization: `Bearer ${auth.edentoken}`
+                    },
+                    data: {
+                        response_as_dict: true,
+                        attributes_as_list: false,
+                        show_original_response: false,
+                        file_url: null,
+                        providers: 'amazon',
+                        file: file.file[0] ? file.file[0] : image.image[0]
+                    }
+                };
+                return axios.request(options)
+                    .then(function (response) {
+                        console.log(response.data);
+                    })
+                    .catch(function (error) {
+                        console.error(error);
+                    });
             })
             .catch((error) => {
                 console.log(error);

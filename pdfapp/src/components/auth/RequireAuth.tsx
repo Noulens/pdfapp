@@ -6,12 +6,10 @@ const RequireAuth = () => {
 	const location = useLocation()
 	const from = location.state?.from?.pathname || "/"
 		if (auth?.id) {
-			console.log("Authed")
 			return <Outlet />
 		}
 		else
 		{
-			console.log("Busted")
 			return <Navigate to="/login" state={{from: location}} replace/>
 		}
 }

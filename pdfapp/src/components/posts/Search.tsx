@@ -21,6 +21,8 @@ const defaultTheme = createTheme();
 interface Post {
 	id: number;
 	title: string;
+	file: string;
+	image: string;
 	slug: string;
 	author: number;
 	excerpt: string;

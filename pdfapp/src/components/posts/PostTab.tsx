@@ -24,12 +24,13 @@ const PostsTab = (props: { posts: any; }) => {
                 <CssBaseline />
                 <Container maxWidth="md" component="main">
                     <p>Can not find any posts, sorry</p>
-                    <Button
-                        href={'/create'}
-                        variant="contained"
-                        color="primary">
-                        Upload new
-                    </Button>
+                    <Link to={'/create'}>
+                        <Button
+                            variant="contained"
+                            color="primary">
+                            Upload new
+                        </Button>
+                    </Link>
                 </Container>
             </ThemeProvider>
         )
@@ -79,12 +80,13 @@ const PostsTab = (props: { posts: any; }) => {
                                 })}
                                 <TableRow>
                                     <TableCell colSpan={4} align="right">
+                                        <Link to={'/create'}>
                                         <Button
-                                            href={'/create'}
                                             variant="contained"
                                             color="primary">
                                             Upload new
                                         </Button>
+                                        </Link>
                                     </TableCell>
                                 </TableRow>
                             </TableBody>

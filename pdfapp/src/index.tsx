@@ -14,6 +14,7 @@ import Create from "./components/crud/Create";
 import Delete from "./components/crud/Delete";
 import { AuthProvider } from "./context/AuthProvider";
 import RequireAuth from "./components/auth/RequireAuth";
+import {ToastContainer} from "react-toastify";
 
 
 const root = ReactDOM.createRoot(
@@ -23,6 +24,7 @@ root.render(
 	<React.StrictMode>
 		<BrowserRouter >
 			<AuthProvider>
+				<ToastContainer />
 				<Header />
 					<Routes>
 						<Route path="/register" element={<Register />}/>

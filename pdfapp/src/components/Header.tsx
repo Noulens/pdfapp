@@ -10,7 +10,6 @@ import Box from '@mui/material/Box';
 import SearchBar from "material-ui-search-bar";
 
 
-
 const Header = () => {
 	let history = useNavigate();
 	const [data, setData] = useState({ search: '' });
