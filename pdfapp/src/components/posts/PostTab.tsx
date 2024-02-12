@@ -1,6 +1,6 @@
 import React from 'react';
 import Container from '@material-ui/core/Container';
-import Link from '@material-ui/core/Link';
+import {Link} from "react-router-dom";
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -12,12 +12,27 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import Button from '@material-ui/core/Button';
 import CssBaseline from "@mui/material/CssBaseline";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
+import useAuth from "../../hooks/useAuth";
 
 const defaultTheme = createTheme();
 
 const PostsTab = (props: { posts: any; }) => {
     const { posts } = props;
-    if (!posts || posts.length === 0) return <p>Can not find any posts, sorry</p>;
+    if (!posts || posts.length === 0)
+        return (
+            <ThemeProvider theme={defaultTheme}>
+                <CssBaseline />
+                <Container maxWidth="md" component="main">
+                    <p>Can not find any posts, sorry</p>
+                    <Button
+                        href={'/create'}
+                        variant="contained"
+                        color="primary">
+                        Upload new
+                    </Button>
+                </Container>
+            </ThemeProvider>
+        )
     return (
         <ThemeProvider theme={defaultTheme}>
             <CssBaseline />
@@ -44,14 +59,14 @@ const PostsTab = (props: { posts: any; }) => {
                                             <TableCell align="left">
                                                 <Link
                                                     color="textPrimary"
-                                                    href={'/post/' + post.slug}>
+                                                    to={'/post/' + post.slug}>
                                                     {post.title}
                                                 </Link>
                                             </TableCell>
 
                                             <TableCell align="left">
                                                 <Link
-                                                    href={'/delete/' + post.id}>
+                                                    to={'/delete/' + post.id}>
                                                     <DeleteForeverIcon></DeleteForeverIcon>
                                                 </Link>
                                             </TableCell>

@@ -15,9 +15,7 @@ const Header = () => {
 	let history = useNavigate();
 	const [data, setData] = useState({ search: '' });
 	const goSearch = (e: any) => {
-		console.log(data.search)
 		history('/search/?search=' + data.search);
-		window.location.reload()
 	}
 
 	return (

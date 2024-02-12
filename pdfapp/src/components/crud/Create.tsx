@@ -40,14 +40,22 @@ export default function Create() {
 
     const [formData, updateFormData] = useState(initialFormData);
     const [image, setFile] = useState<any>(null);
+    const [file, setPdf] = useState<any>(null);
 
     const handleChange = (e: any) => {
         if (e.target.name.includes('image')) {
             setFile({
                 image: e.target.files,
             })
-            console.log(e.target.files);
+            setPdf(null);
         }
+        if (e.target.name.includes('file')) {
+            setPdf({
+                file: e.target.files,
+            })
+            setFile(null);
+        }
+
         if (e.target.name.includes('title')) {
             updateFormData({
                 ...formData,
@@ -64,6 +72,10 @@ export default function Create() {
 
     const handleSubmit = (e: any) => {
         e.preventDefault();
+        if ((file === null && image === null) || (file && image)) {
+            alert('Please upload one file');
+            return;
+        }
         const config = {
             headers: {
                 Authorization: localStorage.getItem('access_token')
@@ -79,8 +91,12 @@ export default function Create() {
         formdata.append('author', sessionStorage.getItem('user_id') as string)
         formdata.append('excerpt', formData.excerpt);
         formdata.append('content', formData.content);
-        formdata.append('image', image.image[0]);
-
+        if (file) {
+            formdata.append('file', file.file[0]);
+        }
+        if (image) {
+            formdata.append('image', image.image[0]);
+        }
         axios.post(url, formdata, config)
             .then((res) => {
                 history('/', {replace: true});
@@ -151,6 +167,8 @@ export default function Create() {
                                 multiline
                                 minRows={4}/>
                         </Grid>
+                        <br/>
+                        <p>Upload an image</p>
                             <IconButton color="primary" component="span">
                                 <input
                                     accept="image/*"
@@ -158,6 +176,17 @@ export default function Create() {
                                     id="raised-button-file"
                                     onChange={handleChange}
                                     name={"image"}
+                                    type="file"/>
+                            </IconButton>
+                        <br/>
+                        <p>or upload a pdf</p>
+                            <IconButton color="primary" component="span">
+                                <input
+                                    accept="application/pdf"
+                                    style={{ alignItems: "center" }}
+                                    id="raised-button-file"
+                                    onChange={handleChange}
+                                    name={"file"}
                                     type="file"/>
                             </IconButton>
                     </Grid>

@@ -14,12 +14,15 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {isAxiosError} from "axios";
+import useAuth from "../../hooks/useAuth";
 
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 export default function Login() {
+	const { auth }: any = useAuth();
+	const { setAuth }: any = useAuth()
 	const navigate = useNavigate();
 	const initialFormData = Object.freeze({
 		email: '',
@@ -51,9 +54,11 @@ export default function Login() {
 			});
 		})
 		.then((res: any) => {
-			sessionStorage.setItem('user_id', res.data.id);
-			sessionStorage.setItem('user_email', res.data.email);
-			sessionStorage.setItem('edentoken', res.data.edentoken);
+			setAuth({
+				user: res.data?.email,
+				edentoken: res.data?.edentoken,
+				id: res.data?.id
+			});
 			navigate('/');
 		})
 		.catch((error: any) => {

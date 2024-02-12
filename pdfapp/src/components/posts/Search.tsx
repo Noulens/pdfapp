@@ -4,7 +4,7 @@ import axiosInstance from '../../axios';
 import CssBaseline from "@mui/material/CssBaseline";
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import {Link} from "react-router-dom";
+import {Link, Navigate, useLocation} from "react-router-dom";
 import Button from "@mui/material/Button";
 import Paper from "@material-ui/core/Paper";
 import TableContainer from "@material-ui/core/TableContainer";
@@ -14,6 +14,7 @@ import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+import useAuth from "../../hooks/useAuth";
 
 const defaultTheme = createTheme();
 
@@ -34,6 +35,9 @@ interface AppState {
 
 const Search = () => {
 	const search = 'search';
+	const { auth }: any = useAuth();
+	const location = useLocation()
+	const from = location.state?.from?.pathname || "/"
 	const [appState, setAppState] = useState<AppState>({
 		search: '',
 		posts: [],

@@ -4,9 +4,16 @@ import './App.css';
 import PostLoadingComponent from './components/posts/PostLoading';
 import axiosInstance from "./axios";
 import PostsTab from "./components/posts/PostTab";
+import Create from "./components/crud/Create";
+import Button from "@material-ui/core/Button";
+import {Navigate, Outlet, useLocation} from "react-router-dom";
+import useAuth from "./hooks/useAuth";
 
 const App = () => {
+	const { auth }: any = useAuth();
 	const PostLoading = PostLoadingComponent(PostsTab);
+	const location = useLocation()
+	const from = location.state?.from?.pathname || "/"
 	const [appState, setAppState] = useState({
 		loading: false,
 		posts: null,
@@ -33,7 +40,21 @@ const App = () => {
 			effectRun.current = true
 		}
 	}, [])
-
+	if (appState.posts === null)
+	{
+		return (
+			<div className="App">
+				<h1>All Uploads</h1>
+				No posts available
+				<Button
+					href={'/create'}
+					variant="contained"
+					color="primary">
+					Upload new
+				</Button>
+			</div>
+		);
+	}
 	return (
 		<div className="App">
 			<h1>All Uploads</h1>
