@@ -13,6 +13,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import {isAxiosError} from "axios";
 
 
 // TODO remove, this demo shouldn't need to reset the theme.
@@ -39,18 +40,25 @@ export default function Login() {
 			email: formData.email,
 			password: formData.password,
 		})
-			.then((res: any) => {
-				localStorage.setItem('access_token', res.data.access);
-				localStorage.setItem('refresh_token', res.data.refresh);
-				axiosInstance.defaults.headers['Authorization'] =
-					'JWT ' + localStorage.getItem('access_token');
-				// console.log(res);
-				// console.log(res.data);
-				navigate('/');
-			})
-			.catch((error: any) => {
-				console.log(error);
+		.then((res: any) => {
+			localStorage.setItem('access_token', res.data.access);
+			localStorage.setItem('refresh_token', res.data.refresh);
+			axiosInstance.defaults.headers['Authorization'] = 'JWT ' + localStorage.getItem('access_token');
+			console.log(res.data);
+
+			return axiosInstance.post('user/details/', {
+				email: formData.email
 			});
+		})
+		.then((res: any) => {
+			sessionStorage.setItem('user_id', res.data.id);
+			sessionStorage.setItem('user_email', res.data.email);
+			sessionStorage.setItem('edentoken', res.data.edentoken);
+			navigate('/');
+		})
+		.catch((error: any) => {
+			console.log(error);
+		});
 	};
 
 	return (

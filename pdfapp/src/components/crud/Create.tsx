@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axiosInstance from '../../axios';
 import { useNavigate } from 'react-router-dom';
 //MaterialUI
 import Button from '@material-ui/core/Button';
@@ -9,7 +8,6 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import {IconButton} from "@mui/material";
-import {FileDownload, FileUpload, PhotoCamera} from "@mui/icons-material";
 import axios from "axios";
 
 export default function Create() {
@@ -64,25 +62,6 @@ export default function Create() {
         }
     };
 
-    // const handleSubmit = (e: any) => {
-    //     e.preventDefault();
-    //     let formdata = new FormData();
-    //     formdata.append('title', formData.title);
-    //     formdata.append('slug', formData.slug);
-    //     formdata.append('author', '1');
-    //     formdata.append('excerpt', formData.excerpt);
-    //     formdata.append('content', formData.content);
-    //     formdata.append('image', image.image[0]);
-    //     axiosInstance
-    //         .post(`create/`, formdata)
-    //         .then((res) => {
-    //             history('/', { replace: true });
-    //         })
-    //         .catch((error) => {
-    //             console.log(error);
-    //         });
-    // };
-
     const handleSubmit = (e: any) => {
         e.preventDefault();
         const config = {
@@ -97,7 +76,7 @@ export default function Create() {
         let formdata = new FormData();
         formdata.append('title', formData.title);
         formdata.append('slug', formData.slug);
-        formdata.append('author', '1');
+        formdata.append('author', sessionStorage.getItem('user_id') as string)
         formdata.append('excerpt', formData.excerpt);
         formdata.append('content', formData.content);
         formdata.append('image', image.image[0]);

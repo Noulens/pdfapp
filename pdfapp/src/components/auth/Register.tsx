@@ -23,6 +23,7 @@ export default function Register() {
 		email: '',
 		username: '',
 		password: '',
+		edentoken: '',
 	});
 	const [formData, updateFormData] = useState(initialFormData);
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,10 +37,11 @@ export default function Register() {
 		event.preventDefault();
 		console.log(formData);
 
-		axiosInstance.post(`user/register/`, {
+		axiosInstance.post(`user/create/`, {
 			email: formData.email,
 			user_name: formData.username,
 			password: formData.password,
+			edentoken: formData.edentoken,
 		})
 		.then((res: any) => {
 			navigate('/login');
@@ -100,6 +102,17 @@ export default function Register() {
 							type="password"
 							id="password"
 							autoComplete="current-password"
+							onChange={handleChange}/>
+					</Grid>
+					<Grid item xs={12}>
+						<TextField
+							autoComplete="edentoken"
+							name="edentoken"
+							required
+							fullWidth
+							id="edentoken"
+							label="EdenToken"
+							autoFocus
 							onChange={handleChange}/>
 					</Grid>
 				</Grid>
