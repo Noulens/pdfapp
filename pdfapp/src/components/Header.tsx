@@ -8,9 +8,11 @@ import { NavLink } from "react-router-dom";
 import Button from "@mui/material/Button";
 import Box from '@mui/material/Box';
 import SearchBar from "material-ui-search-bar";
+import useAuth from "../hooks/useAuth";
 
 
 const Header = () => {
+	const { auth }: any = useAuth()
 	let history = useNavigate();
 	const [data, setData] = useState({ search: '' });
 	const goSearch = (e: any) => {

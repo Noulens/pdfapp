@@ -10,8 +10,11 @@ import Container from '@material-ui/core/Container';
 import {IconButton} from "@mui/material";
 import axios from "axios";
 import useAuth from "../../hooks/useAuth";
+import axiosInstance from "../../axios";
 
 export default function Create() {
+    let newpostid: number = 0
+    let updated: any
     const { auth }: any = useAuth();
     function slugify(string: any) {
         const a =
@@ -101,6 +104,9 @@ export default function Create() {
         }
         axios.post(url, formdata, config)
             .then((res) => {
+                console.log(res);
+                newpostid = res.data.id
+                updated = res.data
                 window.alert('Upload successfull, and being treated')
                 history('/', {replace: true});
                 const options = {
@@ -111,21 +117,52 @@ export default function Create() {
                         authorization: `Bearer ${auth.edentoken}`
                     },
                     data: {
-                        response_as_dict: true,
+                        response_as_dict: false,
                         attributes_as_list: false,
                         show_original_response: false,
                         file_url: null,
                         providers: 'amazon',
-                        file: file.file[0] ? file.file[0] : image.image[0]
+                        file: image.image[0]
                     }
                 };
                 return axios.request(options)
-                    .then(function (response) {
-                        console.log(response.data);
+                .then(function (response) {
+                    console.log(response.data[0].text);
+                    return axiosInstance.put(`edit/${newpostid}`, {
+                        title: updated.title,
+                        slug: updated.slug,
+                        excerpt: updated.excerpt,
+                        content: response.data[0].text,
+                        author: updated.author,
+                        textocr: response.data[0].text,
+                    }).then((res) => {
+                        console.log(res);
+                        const options = {
+                            method: 'POST',
+                            url: 'https://api.edenai.run/v2/ocr/ocr',
+                            headers: {
+                                'content-type': 'multipart/form-data',
+                                authorization: `Bearer ${auth.edentoken}`
+                            },
+                            data: {
+                                response_as_dict: false,
+                                attributes_as_list: false,
+                                show_original_response: false,
+                                file_url: null,
+                                providers: 'amazon',
+                                file: image.image[0]
+                            }
+                        };
+                        return axios.request(options)
+
+
+                    }).catch((error) => {
+                        console.log(error);
                     })
-                    .catch(function (error) {
-                        console.error(error);
-                    });
+                })
+                .catch(function (error) {
+                    console.error(error);
+                });
             })
             .catch((error) => {
                 console.log(error);
