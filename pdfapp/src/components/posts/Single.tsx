@@ -15,6 +15,7 @@ interface Post {
 	excerpt: string;
 	content: string;
 	status: string;
+	keywords: string;
 }
 
 const Single = () => {
@@ -61,12 +62,19 @@ const Single = () => {
 						gutterBottom>
 						{data.posts.title}
 					</Typography>
+					<h2>Content</h2>
 					<Typography
-						variant="h5"
-						align="center"
+						align="justify"
 						color="textSecondary"
 						paragraph>
-						{data.posts.excerpt}
+						{data.posts.content}
+					</Typography>
+					<h2>keywords</h2>
+					<Typography
+						align="justify"
+						color="textSecondary"
+						paragraph>
+						{data.posts.keywords}
 					</Typography>
 				</Container>
 			</div>

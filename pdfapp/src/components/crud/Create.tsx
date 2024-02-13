@@ -12,9 +12,24 @@ import axios from "axios";
 import useAuth from "../../hooks/useAuth";
 import axiosInstance from "../../axios";
 
+
+interface ResponseObject {
+    status: string;
+    provider: string;
+    items: { keyword: string; importance: number }[];
+}
+
+
+function extractKeywords(response: ResponseObject[]) {
+    const keywordsArray = response[0].items.map((item: { keyword: string; importance: number }) => item.keyword);
+    return keywordsArray.join(', ');
+}
+
 export default function Create() {
     let newpostid: number = 0
     let updated: any
+    let fileurl: string = ''
+    let text_to_analyze: string = ''
     const { auth }: any = useAuth();
     function slugify(string: any) {
         const a =
@@ -97,9 +112,11 @@ export default function Create() {
         formdata.append('excerpt', formData.excerpt);
         formdata.append('content', formData.content);
         if (file) {
+            fileurl = file.file[0];
             formdata.append('file', file.file[0]);
         }
         if (image) {
+            fileurl = image.image[0];
             formdata.append('image', image.image[0]);
         }
         axios.post(url, formdata, config)
@@ -122,40 +139,57 @@ export default function Create() {
                         show_original_response: false,
                         file_url: null,
                         providers: 'amazon',
-                        file: image.image[0]
+                        file: fileurl
                     }
                 };
                 return axios.request(options)
                 .then(function (response) {
                     console.log(response.data[0].text);
+                    text_to_analyze = response.data[0].text
                     return axiosInstance.put(`edit/${newpostid}`, {
                         title: updated.title,
                         slug: updated.slug,
                         excerpt: updated.excerpt,
                         content: response.data[0].text,
                         author: updated.author,
-                        textocr: response.data[0].text,
+                        keywords: "temp"
                     }).then((res) => {
                         console.log(res);
                         const options = {
                             method: 'POST',
-                            url: 'https://api.edenai.run/v2/ocr/ocr',
+                            url: 'https://api.edenai.run/v2/text/keyword_extraction',
                             headers: {
-                                'content-type': 'multipart/form-data',
+                                accept: 'application/json',
+                                'content-type': 'application/json',
                                 authorization: `Bearer ${auth.edentoken}`
                             },
                             data: {
                                 response_as_dict: false,
                                 attributes_as_list: false,
                                 show_original_response: false,
-                                file_url: null,
-                                providers: 'amazon',
-                                file: image.image[0]
+                                providers: 'openai',
+                                text: text_to_analyze
                             }
                         };
                         return axios.request(options)
-
-
+                            .then((res) => {
+                                console.log(res.data);
+                                const responseData: ResponseObject[] = res.data;
+                                const extractedKeywords = extractKeywords(responseData);
+                                console.log("Here ", extractedKeywords);
+                                return axiosInstance.put(`edit/${newpostid}`, {
+                                    title: updated.title,
+                                    slug: updated.slug,
+                                    excerpt: updated.excerpt,
+                                    content: text_to_analyze,
+                                    author: updated.author,
+                                    keywords: extractedKeywords
+                                }).then((res) => {
+                                    console.log(res);
+                                })
+                            }).catch((error) => {
+                                console.log(error);
+                            })
                     }).catch((error) => {
                         console.log(error);
                     })
@@ -201,6 +235,7 @@ export default function Create() {
                                 name="excerpt"
                                 autoComplete="excerpt"
                                 onChange={handleChange}
+                                defaultValue={"Your excerpt will be updated after the file is uploaded"}
                                 multiline
                                 minRows={4}/>
                         </Grid>
@@ -227,6 +262,7 @@ export default function Create() {
                                 name="content"
                                 autoComplete="content"
                                 onChange={handleChange}
+                                defaultValue={"Your content will be updated after the file is uploaded"}
                                 multiline
                                 minRows={4}/>
                         </Grid>
