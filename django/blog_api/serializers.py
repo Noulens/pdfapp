@@ -6,7 +6,7 @@ from django.conf import settings
 class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
-        fields = ('category', 'id', 'title', 'image', 'file', 'slug', 'author',
+        fields = ('id', 'title', 'image', 'file', 'slug', 'author',
                   'excerpt', 'content', 'status', 'keywords', 'textocr')
 
 

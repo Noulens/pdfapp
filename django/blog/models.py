@@ -7,12 +7,6 @@ from django.utils.translation import gettext_lazy as _
 def upload_to(instance, filename):
     return 'posts/{filename}'.format(filename=filename)
 
-class Category(models.Model):
-    name = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.name
-
 
 class Post(models.Model):
 
@@ -25,8 +19,6 @@ class Post(models.Model):
         ('published', 'Published'),
     )
 
-    category = models.ForeignKey(
-        Category, on_delete=models.PROTECT, default=1)
     title = models.CharField(max_length=250)
     file = models.FileField(upload_to=upload_to, null=True)
     image = models.ImageField(_("Image"), upload_to=upload_to, null=True)
